@@ -7,6 +7,7 @@ import LoadingComponent from "./components/Loading.vue";
 import { FilmesService } from "./service/FilmesService";
 import { StarshipsService } from "./service/StarshipsService";
 import type { AppViewData } from "./service/interfaces/interfaces";
+import { DataHelper } from "./service/helpers/helper";
 
 export default defineComponent({
   name: "App",
@@ -37,15 +38,7 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data }: any = await StarshipsService.getStarships();
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const sortedData = data.results.sort(function (aItem: any, bItem: any) {
-        const convertAItemToNumber = parseInt(aItem.length.replace(/,/g, ""));
-        const convertBItemToNumber = parseInt(bItem.length.replace(/,/g, ""));
-
-        return (
-          Math.ceil(convertAItemToNumber) - Math.ceil(convertBItemToNumber)
-        );
-      });
+      const sortedData = DataHelper.sortedData(data);
       this.starships = sortedData;
     },
   },
